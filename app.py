@@ -26,7 +26,7 @@ uploaded_file = st.file_uploader(
 if uploaded_file:
 
 
-    df = pd.read_excel(uploaded_file)
+    df = pd.read_excel(uploaded_file, sheet_name=0)
 
 
     st.success(
