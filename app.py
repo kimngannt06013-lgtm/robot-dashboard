@@ -320,27 +320,56 @@ df["Detected_Brand"] = (
 
     with tab2:
 
-
-        st.header(
-            "Brand Analysis"
-        )
-
-
-        st.info(
-
-            "Brand analysis only from uploaded raw data. "
-            "No external data added."
-
-        )
+    st.header(
+        "Brand Analysis"
+    )
 
 
-        st.dataframe(
+    brand_table = (
 
-            df.head(200),
+        df.groupby("Detected_Brand")
 
-            use_container_width=True
+        .agg(
+
+            Units=("Quantity","sum"),
+
+            Value_USD=("Value_USD","sum")
 
         )
+
+        .reset_index()
+
+        .sort_values(
+            "Value_USD",
+            ascending=False
+        )
+
+    )
+
+
+    st.dataframe(
+        brand_table,
+        use_container_width=True
+    )
+
+
+    fig = px.bar(
+
+        brand_table,
+
+        x="Detected_Brand",
+
+        y="Value_USD",
+
+        title="Brand Market Share"
+
+    )
+
+
+    st.plotly_chart(
+        fig,
+        use_container_width=True
+    )
 
 
 
