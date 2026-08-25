@@ -125,7 +125,74 @@ if uploaded_file:
         df["Value_USD"],
         errors="coerce"
     ).fillna(0)
+# =========================
+# BRAND EXTRACTION ENGINE
+# FROM Actual_Detailed_Product ONLY
+# =========================
 
+
+brand_keywords = {
+
+    "NACHI": [
+        "NACHI",
+        "NACHI-FUJIKOSHI",
+        "NACHI FUJIKOSHI"
+    ],
+
+    "FANUC": [
+        "FANUC"
+    ],
+
+    "YASKAWA": [
+        "YASKAWA",
+        "MOTOMAN"
+    ],
+
+    "KUKA": [
+        "KUKA"
+    ],
+
+    "ABB": [
+        "ABB"
+    ],
+
+    "KAWASAKI": [
+        "KAWASAKI"
+    ],
+
+    "YAMAHA": [
+        "YAMAHA"
+    ],
+
+    "EPSON": [
+        "EPSON"
+    ]
+
+}
+
+
+def detect_brand(text):
+
+    text = str(text).upper()
+
+
+    for brand, keys in brand_keywords.items():
+
+        for k in keys:
+
+            if k in text:
+
+                return brand
+
+
+    return "OTHER"
+
+
+
+df["Detected_Brand"] = (
+    df["Actual_Detailed_Product"]
+    .apply(detect_brand)
+)
 
 
     # =========================
